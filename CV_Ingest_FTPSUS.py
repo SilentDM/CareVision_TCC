@@ -17,7 +17,11 @@ if not os.path.exists(file_path):  # Verifica se o diretório local existe
 
 for file_name in d_files:
     file_path_name = os.path.join(file_path, file_name)  # Caminho completo do arquivo local + nome do arquivo
+    if os.path.exists(file_path_name):  # Verifica se o arquivo local já existe
+        print(f"Arquivo {file_name} já existe. Pulando download.")  
+        continue
+    print(f"Baixando arquivo {file_name}...") 
     with open(file_path_name, "wb") as f:  # Abrindo o arquivo local em modo de escrita binária
         ftp.retrbinary("RETR " + file_name, f.write)  # Baixando o arquivo do servidor FTP e salvando no arquivo local
-
+    print(f"Arquivo {file_name} baixado com sucesso.") 
 ftp.quit()  # Encerra a conexão com o servidor FTP

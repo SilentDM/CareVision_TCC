@@ -18,11 +18,16 @@ from dbfread import DBF #biblioteca do SUS para ler arquivos dbf
 base_dir = os.getcwd()+'\\DadosFTPSUS'
 dbc_files = [f for f in os.listdir(base_dir) if f.endswith(".dbc")]  # Lista todos os arquivos .dbc no diretório de dadosFTPSUS
 #print (f"Arquivos DBC encontrados: {len(dbc_files)}")  # Imprime a quantidade de arquivos .dbc encontrados
-
+file_name = str(dbc_files[0])  # Pega o nome do primeiro arquivo .dbc da lista
+print(f"Arquivo DBC selecionado: {file_name}")  # Imprime o nome do arquivo .dbc selecionado
 for dbc_file in dbc_files:
+    output_file = os.path.join(base_dir, dbc_file.replace(".dbc", ".dbf")) # Caminho do arquivo .dbf convertido
+    if os.path.exists(output_file):  # Verifica se o arquivo .dbf convertido já existe
+        print(f"Arquivo {dbc_file} já convertido para .dbf. Pulando conversão.")  
+        continue
     try:
-        output_file = os.path.join(base_dir, dbc_file.replace(".dbc", ".dbf")) # Caminho do arquivo .dbf convertido
+        print(f"Convertendo {dbc_file}...")  # Imprime mensagem de sucesso
         datasus_dbc.decompress(os.path.join(base_dir, dbc_file), output_file)  # Converte o arquivo .dbc para .dbf
-        print(f"Arquivo {dbc_file} convertido com sucesso para .dbf")  # Imprime mensagem de sucesso
+        print(f"Arquivo {dbc_file} convertido com sucesso.")  # Imprime mensagem de sucesso
     except Exception as e:
         print(f"Erro ao converter o arquivo {dbc_file}: {e}")  # Imprime mensagem de erro
